@@ -5,9 +5,9 @@ export interface ISubmission extends Document {
   studentId: mongoose.Types.ObjectId;
   repoUrl: string;
   note: string;
-  status: "pending" | "accepted" | "needs_improvement"; // Updated based on requirements
+  status: "pending" | "accepted" | "needs_improvement"; 
   feedback?: string;
-  aiPreliminaryFeedback?: string; // Bonus feature: To hold AI-generated feedback
+  aiPreliminaryFeedback?: string;
 }
 
 const SubmissionSchema = new Schema<ISubmission>(
