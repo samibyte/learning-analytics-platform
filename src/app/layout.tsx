@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.css"
 import { Providers } from "@/components/Providers";
+import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Learning Analytics Platform",
@@ -13,10 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`antialiased`}>
+    <html lang="en" className="h-full bg-slate-50">
+      <body className={`h-full antialiased`}>
         <Providers>
-          {children}
+          <Navbar />
+          <main>{children}</main>
         </Providers>
       </body>
     </html>
