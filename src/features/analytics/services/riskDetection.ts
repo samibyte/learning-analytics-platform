@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { User } from "@/features/users/models/User";
 import { Assignment } from "@/features/assignments/models/Assignment";
 import { Submission, ISubmission } from "@/features/submissions/models/Submission";
@@ -19,36 +20,31 @@ export interface StudentRiskProfile {
   reasons: string[];
 }
 
-export async function getAtRiskStudents(): Promise<StudentRiskProfile[]> {
+async function calculateAtRiskStudents(): Promise<StudentRiskProfile[]> {
   await connectDB();
 
-  // 1. Get all students
-  const students = await User.find({ role: "student" }).lean();
-  
-  if (!students || students.length === 0) return [];
-
-  // 2. Determine how many assignments are currently past due
+  // 1. Fire off all database requests simultaneously
   const now = new Date();
-  const pastDueAssignmentsCount = await Assignment.countDocuments({
-    dueDate: { $lt: now },
-  });
-
-  // 3. Aggregate submissions for all students
-  // We want to count total submissions, late submissions, and needs_improvement status per student.
-  const submissionAggregates = await Submission.aggregate([
-    {
-      $group: {
-         _id: "$studentId",
-         totalSubmissions: { $sum: 1 },
-         lateCount: {
-           $sum: { $cond: [{ $eq: ["$isLate", true] }, 1, 0] }
-         },
-         needsImprovementCount: {
-           $sum: { $cond: [{ $eq: ["$status", "needs_improvement"] }, 1, 0] }
-         }
+  const [students, pastDueAssignmentsCount, submissionAggregates] = await Promise.all([
+    User.find({ role: "student" }).select("_id name email").lean(),
+    Assignment.countDocuments({ dueDate: { $lt: now } }),
+    Submission.aggregate([
+      {
+        $group: {
+           _id: "$studentId",
+           totalSubmissions: { $sum: 1 },
+           lateCount: {
+             $sum: { $cond: [{ $eq: ["$isLate", true] }, 1, 0] }
+           },
+           needsImprovementCount: {
+             $sum: { $cond: [{ $eq: ["$status", "needs_improvement"] }, 1, 0] }
+           }
+        }
       }
-    }
+    ])
   ]);
+
+  if (!students || students.length === 0) return [];
 
   // Convert aggregates to a fast lookup map
   const statsMap = new Map<string, any>();
@@ -110,3 +106,9 @@ export async function getAtRiskStudents(): Promise<StudentRiskProfile[]> {
   // We'll return all and let frontend decide, but sort by riskScore descending
   return profiles.sort((a, b) => b.riskScore - a.riskScore);
 }
+
+export const getAtRiskStudents = unstable_cache(
+  calculateAtRiskStudents,
+  ["at_risk_students_cache"],
+  { revalidate: 300 } // 5 minutes cache
+);

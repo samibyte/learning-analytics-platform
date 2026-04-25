@@ -80,6 +80,8 @@ export function AtRiskStudents({
               <td className="px-6 py-4 text-right">
                 <a
                   href={`mailto:${profile.studentEmail}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 px-3 py-1.5 text-xs font-medium text-white transition-colors border border-slate-700/50"
                   title="Contact Student"
                 >
