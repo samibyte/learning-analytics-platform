@@ -180,3 +180,74 @@ export async function deleteAssignment(assignmentId: string) {
 
   return { success: true };
 }
+
+/** ─── GET FILTERED ASSIGNMENTS ─────────────────────────────────────────── **/
+export async function getFilteredAssignmentsAction(searchParams: {
+  search?: string;
+  difficulty?: string;
+  sort?: string;
+}): Promise<AssignmentPayload[]> {
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role !== "instructor")
+    throw new Error("Unauthorized");
+
+  await connectToDatabase();
+
+  const query: any = {};
+
+  if (searchParams.search) {
+    query.$or = [
+      { title: { $regex: searchParams.search, $options: "i" } },
+      { description: { $regex: searchParams.search, $options: "i" } },
+    ];
+  }
+
+  if (searchParams.difficulty && searchParams.difficulty !== "all") {
+    query.difficulty = searchParams.difficulty;
+  }
+
+  let sortObj: any = { createdAt: -1 };
+  if (searchParams.sort) {
+    switch (searchParams.sort) {
+      case "dueDate_asc":
+        sortObj = { dueDate: 1 };
+        break;
+      case "dueDate_desc":
+        sortObj = { dueDate: -1 };
+        break;
+      case "title_asc":
+        sortObj = { title: 1 };
+        break;
+      case "title_desc":
+        sortObj = { title: -1 };
+        break;
+      case "newest":
+        sortObj = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortObj = { createdAt: 1 };
+        break;
+    }
+  }
+
+  const assignments = (await Assignment.find(query)
+    .sort(sortObj)
+    .populate({
+      path: "instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .populate({
+      path: "lastEditedBy",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .populate({
+      path: "editHistory.instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .lean()) as AssignmentPayload[];
+
+  return JSON.parse(JSON.stringify(assignments));
+}

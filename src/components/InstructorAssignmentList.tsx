@@ -94,7 +94,7 @@ export function InstructorAssignmentList({
                 {/* Right side: Deadline + edit link */}
                 <div className="shrink-0 text-right">
                   <p className="text-xs text-slate-400">
-                    Due {new Date(assignment.dueDate).toLocaleDateString()}
+                    Deadline {new Date(assignment.dueDate).toLocaleDateString()}
                   </p>
                   <Link
                     href={`/instructor/assignments/${assignment._id}/edit`}

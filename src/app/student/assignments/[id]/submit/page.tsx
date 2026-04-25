@@ -86,7 +86,7 @@ export default function SubmitAssignmentPage() {
           </h3>
           <div className="mt-1 flex flex-wrap gap-2 text-sm text-slate-400">
             <span>
-              Due: {new Date(assignment.dueDate).toLocaleDateString()}
+              Deadline: {new Date(assignment.dueDate).toLocaleDateString()}
             </span>
             <span>&bull;</span>
             <span className="capitalize text-fuchsia-400">
@@ -111,8 +111,15 @@ export default function SubmitAssignmentPage() {
             <div className="bg-amber-900/20 text-amber-400 p-4 rounded-xl text-sm border border-amber-800/40 flex items-start gap-3">
               <span className="text-xl">⚠️</span>
               <div>
-                <p className="font-bold uppercase tracking-wider text-[10px]">Late Submission Warning</p>
-                <p className="mt-1">The deadline for this assignment has passed. This submission will be capped at <span className="font-bold text-white">30 marks</span> (out of 60).</p>
+                <p className="font-bold uppercase tracking-wider text-[10px]">
+                  Late Submission Warning
+                </p>
+                <p className="mt-1">
+                  The deadline for this assignment has passed. This submission
+                  will be capped at{" "}
+                  <span className="font-bold text-white">30 marks</span> (out of
+                  60).
+                </p>
               </div>
             </div>
           )}
@@ -145,7 +152,8 @@ export default function SubmitAssignmentPage() {
               Live Project URL
             </label>
             <p className="text-xs text-slate-500 mt-1 mb-2">
-              Provide a link to your deployed application (e.g., Vercel, Netlify).
+              Provide a link to your deployed application (e.g., Vercel,
+              Netlify).
             </p>
             <input
               id="liveUrl"

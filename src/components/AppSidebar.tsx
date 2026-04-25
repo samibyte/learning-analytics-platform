@@ -28,7 +28,7 @@ interface NavItem {
 
 const INSTRUCTOR_NAV: NavItem[] = [
   { label: "Dashboard", href: "/instructor/dashboard", icon: LayoutDashboard },
-  { label: "New Assignment", href: "/instructor/assignments/new", icon: PlusCircle },
+  { label: "Assignments", href: "/instructor/assignments", icon: FileText },
   { label: "Submissions", href: "/instructor/submissions", icon: ClipboardList },
 ];
 

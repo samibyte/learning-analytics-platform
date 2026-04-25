@@ -1,6 +1,6 @@
 import { getInstructorDashboardData } from "@/features/assignments/actions";
-import { InstructorAssignmentList } from "@/components/InstructorAssignmentList";
-import type { AssignmentPayload } from "@/features/types";
+import { fetchAtRiskStudentsAction } from "@/features/analytics/actions";
+import { AtRiskStudents } from "@/components/AtRiskStudents";
 import Link from "next/link";
 import {
   PlusCircle,
@@ -21,6 +21,8 @@ export default async function InstructorDashboard() {
     acceptedCount,
     totalStudents,
   } = await getInstructorDashboardData();
+
+  const atRiskStudents = await fetchAtRiskStudentsAction();
 
   const acceptanceRate =
     totalSubmissions > 0
@@ -127,25 +129,24 @@ export default async function InstructorDashboard() {
           </div>
         </div>
 
-        {/* Assignments table */}
-        <div className="rounded-2xl bg-[#151025] border border-slate-800/60 overflow-hidden">
+        {/* At Risk Students analytics table */}
+        <div className="rounded-2xl bg-[#151025] border border-slate-800/60 overflow-hidden mt-8">
           <div className="border-b border-slate-800/60 px-4 md:px-6 py-4 flex items-center justify-between">
             <div>
               <h2 className="text-base font-semibold text-white">
-                All Assignments
+                Students Needing Attention
               </h2>
               <p className="text-xs text-slate-500 mt-0.5">
-                Click to view details or edit
+                Students flagged with multiple missing, late, or needs improvement tasks
               </p>
             </div>
-            <Link
-              href="/instructor/assignments/new"
-              className="text-xs font-medium text-fuchsia-500 hover:text-fuchsia-400"
-            >
-              + Add new
-            </Link>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center rounded-lg bg-red-500/10 px-2.5 py-1 text-xs font-medium text-red-500 border border-red-500/20">
+                {atRiskStudents.length} At Risk
+              </span>
+            </div>
           </div>
-          <InstructorAssignmentList assignments={assignments} />
+          <AtRiskStudents profiles={atRiskStudents} />
         </div>
       </div>
     </div>
