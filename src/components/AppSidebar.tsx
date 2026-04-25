@@ -30,7 +30,7 @@ const INSTRUCTOR_NAV: NavItem[] = [
 
 const STUDENT_NAV: NavItem[] = [
   { label: "Dashboard", href: "/student/dashboard", icon: LayoutDashboard },
-  { label: "My Assignments", href: "/student/dashboard", icon: BookOpen },
+  { label: "My Assignments", href: "/student/assignments", icon: BookOpen },
 ];
 
 interface AppSidebarProps {
