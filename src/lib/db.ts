@@ -4,15 +4,26 @@ const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
   throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env"
+    "Please define the MONGODB_URI environment variable inside .env",
   );
 }
 
+interface GlobalWithMongoose {
+  mongoose?: {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+  };
+}
+
+const globalWithMongoose = global as GlobalWithMongoose;
+
 // Next.js hot-reloading can cause multiple DB connections, so we cache it globally
-let cached = (global as any).mongoose;
+let cached: NonNullable<GlobalWithMongoose["mongoose"]> =
+  globalWithMongoose.mongoose as NonNullable<GlobalWithMongoose["mongoose"]>;
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+  globalWithMongoose.mongoose = { conn: null, promise: null };
+  cached = globalWithMongoose.mongoose;
 }
 
 async function connectToDatabase() {
@@ -29,7 +40,7 @@ async function connectToDatabase() {
       return mongoose;
     });
   }
-  
+
   try {
     cached.conn = await cached.promise;
   } catch (e) {

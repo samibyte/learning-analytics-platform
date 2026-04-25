@@ -9,7 +9,11 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "student@example.com" },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "student@example.com",
+        },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -19,13 +23,18 @@ export const authOptions: NextAuthOptions = {
 
         await connectToDatabase();
 
-        const user = await User.findOne({ email: credentials.email }).select("+password");
+        const user = await User.findOne({ email: credentials.email }).select(
+          "+password",
+        );
 
         if (!user) {
           throw new Error("No user found with this email");
         }
 
-        const isPasswordMatch = await bcrypt.compare(credentials.password, user.password);
+        const isPasswordMatch = await bcrypt.compare(
+          credentials.password,
+          user.password,
+        );
 
         if (!isPasswordMatch) {
           throw new Error("Invalid password");
@@ -44,7 +53,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role;
+        if ("role" in user) {
+          token.role = user.role;
+        }
       }
       return token;
     },

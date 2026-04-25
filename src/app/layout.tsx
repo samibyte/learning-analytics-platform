@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "../styles/globals.css"
 import { Providers } from "@/components/Providers";
-import { Navbar } from "@/components/Navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
-  title: "Learning Analytics Platform",
-  description: "Assignment and Learning platform",
+  title: "EduAnalytics — Learning Analytics Platform",
+  description: "Role-based assignment and learning analytics platform for instructors and students.",
 };
 
 export default function RootLayout({
@@ -14,11 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full bg-slate-50">
-      <body className={`h-full antialiased`}>
+    <html lang="en" className="h-full bg-[#0F0A1A]">
+      <body className="h-full antialiased">
         <Providers>
-          <Navbar />
-          <main>{children}</main>
+          {children}
+          <Toaster theme="dark" />
         </Providers>
       </body>
     </html>

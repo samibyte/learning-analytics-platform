@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
   const router = useRouter();
-  
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,14 +40,22 @@ export default function RegisterPage() {
       });
 
       if (signInRes?.error) {
-        setError("Registered successfully, but auto-login failed. Please log in.");
+        setError(
+          "Registered successfully, but auto-login failed. Please log in.",
+        );
         router.push("/login");
       } else {
-        router.push(role === "instructor" ? "/instructor/dashboard" : "/student/dashboard");
+        router.push(
+          role === "instructor"
+            ? "/instructor/dashboard"
+            : "/student/dashboard",
+        );
         router.refresh();
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred",
+      );
     } finally {
       setLoading(false);
     }
@@ -73,9 +81,12 @@ export default function RegisterPage() {
                 {error}
               </div>
             )}
-            
+
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-slate-300">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-slate-300"
+              >
                 Full Name
               </label>
               <div className="mt-2">
@@ -93,7 +104,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-slate-300"
+              >
                 Email
               </label>
               <div className="mt-2">
@@ -112,7 +126,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-300">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-slate-300"
+              >
                 Password
               </label>
               <div className="mt-2">
@@ -131,7 +148,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-slate-300">
+              <label
+                htmlFor="role"
+                className="block text-sm font-medium text-slate-300"
+              >
                 I am a...
               </label>
               <div className="mt-2">
@@ -139,7 +159,9 @@ export default function RegisterPage() {
                   id="role"
                   name="role"
                   value={role}
-                  onChange={(e) => setRole(e.target.value as "instructor" | "student")}
+                  onChange={(e) =>
+                    setRole(e.target.value as "instructor" | "student")
+                  }
                   className="block w-full rounded-xl border border-transparent bg-[#1A142B] px-4 py-3 text-white focus:border-fuchsia-500 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 sm:text-sm transition-all appearance-none"
                 >
                   <option value="student">Student</option>
@@ -160,7 +182,10 @@ export default function RegisterPage() {
 
             <div className="mt-6 text-center text-sm text-slate-400">
               Already have an account?{" "}
-              <Link href="/login" className="font-semibold text-fuchsia-500 hover:text-fuchsia-400 pb-1 transition-colors">
+              <Link
+                href="/login"
+                className="font-semibold text-fuchsia-500 hover:text-fuchsia-400 pb-1 transition-colors"
+              >
                 Sign In
               </Link>
             </div>
