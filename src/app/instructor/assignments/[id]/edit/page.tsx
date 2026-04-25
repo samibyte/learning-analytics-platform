@@ -232,7 +232,7 @@ export default function EditAssignmentPage({
                     htmlFor="dueDate"
                     className="block text-sm font-medium text-slate-300"
                   >
-                    Due Date
+                    Deadline
                   </label>
                   <div className="mt-2">
                     <input
@@ -286,7 +286,7 @@ export default function EditAssignmentPage({
                     type="text"
                     value={editNote}
                     onChange={(e) => setEditNote(e.target.value)}
-                    placeholder="e.g., Extended due date by one week"
+                    placeholder="e.g., Extended Deadline by one week"
                     className="block w-full rounded-xl border border-transparent bg-[#1A142B] px-4 py-3 text-white placeholder-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 sm:text-sm transition-all"
                   />
                 </div>

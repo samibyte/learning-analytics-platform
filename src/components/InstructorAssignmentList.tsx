@@ -91,7 +91,7 @@ export function InstructorAssignmentList({
                   </div>
                 </div>
 
-                {/* Right side: due date + edit link */}
+                {/* Right side: Deadline + edit link */}
                 <div className="shrink-0 text-right">
                   <p className="text-xs text-slate-400">
                     Due {new Date(assignment.dueDate).toLocaleDateString()}

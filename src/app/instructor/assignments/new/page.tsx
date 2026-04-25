@@ -166,7 +166,7 @@ export default function NewAssignmentPage() {
                     htmlFor="dueDate"
                     className="block text-sm font-medium text-slate-300"
                   >
-                    Due Date
+                    Deadline
                   </label>
                   <div className="mt-2">
                     <input

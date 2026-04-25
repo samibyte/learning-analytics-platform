@@ -88,11 +88,11 @@ export function AssignmentDetailModal({
 
                 {/* Body */}
                 <div className="px-6 py-6 space-y-6">
-                  {/* Due Date & Course Info */}
+                  {/* Deadline & Course Info */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                        Due Date
+                        Deadline
                       </p>
                       <p className="mt-1 text-sm font-medium text-white">
                         {new Date(assignment.dueDate).toLocaleDateString(
@@ -178,7 +178,7 @@ export function AssignmentDetailModal({
                                   by{" "}
                                   {typeof edit.instructorId === "string"
                                     ? edit.instructorId
-                                    : "Unknown"}
+                                    : edit.instructorId?.name || "Unknown"}
                                 </p>
                               </div>
                             ))}

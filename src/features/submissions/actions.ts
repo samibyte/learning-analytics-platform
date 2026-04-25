@@ -27,6 +27,21 @@ export async function getStudentDashboardData(): Promise<{
   // Get all assignments
   const assignments = (await Assignment.find()
     .sort({ createdAt: -1 })
+    .populate({
+      path: "instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .populate({
+      path: "lastEditedBy",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .populate({
+      path: "editHistory.instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
     .lean()) as AssignmentPayload[];
 
   // Get all submissions for this specific student
@@ -48,9 +63,23 @@ export async function getAssignmentDetails(
     throw new Error("Unauthorized");
 
   await connectToDatabase();
-  const assignment = (await Assignment.findById(
-    assignmentId,
-  ).lean()) as AssignmentPayload | null;
+  const assignment = (await Assignment.findById(assignmentId)
+    .populate({
+      path: "instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .populate({
+      path: "lastEditedBy",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .populate({
+      path: "editHistory.instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .lean()) as AssignmentPayload | null;
   return assignment ? JSON.parse(JSON.stringify(assignment)) : null;
 }
 
@@ -157,7 +186,21 @@ export async function getAllSubmissionsForInstructor(): Promise<
 
   // All instructors see ALL assignments in the organisation
   const assignments = (await Assignment.find()
-    .populate({ path: "instructorId", select: "name email" })
+    .populate({
+      path: "instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .populate({
+      path: "lastEditedBy",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
+    .populate({
+      path: "editHistory.instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
     .lean()) as AssignmentPayload[];
 
   const assignmentMap = assignments.reduce<Record<string, AssignmentPayload>>(

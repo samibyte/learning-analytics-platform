@@ -35,6 +35,11 @@ export async function getInstructorDashboardData(): Promise<{
       select: "name email",
       options: { strictPopulate: false },
     })
+    .populate({
+      path: "editHistory.instructorId",
+      select: "name email",
+      options: { strictPopulate: false },
+    })
     .lean()) as AssignmentPayload[];
 
   const assignmentIds = assignments.map((a) => a._id);
