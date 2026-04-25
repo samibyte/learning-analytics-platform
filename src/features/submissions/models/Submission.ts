@@ -11,6 +11,7 @@ export interface ISubmission extends Document {
   assignmentId: mongoose.Types.ObjectId;
   studentId: mongoose.Types.ObjectId;
   repoUrl: string;
+  liveUrl?: string;
   note: string;
   status: "pending" | "accepted" | "needs_improvement";
   feedback?: string;
@@ -37,6 +38,7 @@ const SubmissionSchema = new Schema<ISubmission>(
     assignmentId: { type: Schema.Types.ObjectId, ref: "Assignment", required: true },
     studentId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     repoUrl: { type: String, required: true },
+    liveUrl: { type: String },
     note: { type: String },
     status: {
       type: String,

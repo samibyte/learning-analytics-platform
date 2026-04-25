@@ -139,6 +139,25 @@ export default function SubmitAssignmentPage() {
 
           <div>
             <label
+              htmlFor="liveUrl"
+              className="block text-sm font-medium text-slate-300"
+            >
+              Live Project URL
+            </label>
+            <p className="text-xs text-slate-500 mt-1 mb-2">
+              Provide a link to your deployed application (e.g., Vercel, Netlify).
+            </p>
+            <input
+              id="liveUrl"
+              name="liveUrl"
+              type="url"
+              className="block w-full rounded-xl border border-transparent bg-[#1A142B] px-4 py-3 text-white placeholder-slate-500 focus:border-fuchsia-500 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 sm:text-sm transition-all"
+              placeholder="https://your-project.vercel.app"
+            />
+          </div>
+
+          <div>
+            <label
               htmlFor="note"
               className="block text-sm font-medium text-slate-300"
             >

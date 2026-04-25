@@ -31,6 +31,7 @@ export interface SubmissionPayload {
   assignmentId: string;
   studentId: string | { _id: string; name?: string; email?: string };
   repoUrl: string;
+  liveUrl?: string;
   note?: string;
   status: SubmissionStatus;
   feedback?: string;

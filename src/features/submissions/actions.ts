@@ -96,6 +96,7 @@ export async function submitAssignment(
   await connectToDatabase();
 
   const repoUrl = formData.get("repoUrl") as string;
+  const liveUrl = formData.get("liveUrl") as string;
   const note = formData.get("note") as string;
 
   if (!repoUrl) {
@@ -163,6 +164,7 @@ export async function submitAssignment(
   if (existingSubmission) {
     // Update existing
     existingSubmission.repoUrl = repoUrl;
+    existingSubmission.liveUrl = liveUrl;
     existingSubmission.note = note;
     existingSubmission.status = "pending";
     existingSubmission.isLate = isLate;
@@ -177,6 +179,7 @@ export async function submitAssignment(
     assignmentId,
     studentId: session.user.id,
     repoUrl,
+    liveUrl,
     note,
     aiPreliminaryFeedback,
     isLate,

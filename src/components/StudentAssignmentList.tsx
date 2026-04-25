@@ -75,7 +75,7 @@ export function StudentAssignmentList({
                         </span>
                       ))}
                       <span className="text-xs text-slate-500">
-                        Due: {new Date(assignment.dueDate).toLocaleDateString()}
+                        Deadline: {new Date(assignment.dueDate).toLocaleDateString()}
                       </span>
                     </div>
                   </div>

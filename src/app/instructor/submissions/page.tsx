@@ -159,6 +159,18 @@ export default async function InstructorSubmissionsPage() {
                                 View Repository
                               </a>
                             </div>
+                            {sub.liveUrl && (
+                              <div className="mt-1">
+                                <a
+                                  href={sub.liveUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-emerald-400 hover:text-emerald-300 font-medium underline text-xs"
+                                >
+                                  View Live Project
+                                </a>
+                              </div>
+                            )}
                             {sub.note && (
                               <div className="mt-2 text-xs italic bg-[#1A142B] p-2 rounded border border-slate-800/60 max-w-[200px] truncate">
                                 &quot;{sub.note}&quot;
