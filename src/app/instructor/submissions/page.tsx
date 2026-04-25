@@ -166,27 +166,41 @@ export default async function InstructorSubmissionsPage() {
                             )}
                           </td>
                           <td className="whitespace-nowrap px-3 py-5 text-sm text-slate-400">
-                            <span
-                              className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                                sub.status === "accepted"
-                                  ? "bg-green-400/10 text-green-400"
-                                  : sub.status === "needs_improvement"
-                                    ? "bg-rose-400/10 text-rose-400"
-                                    : "bg-yellow-400/10 text-yellow-500"
-                              }`}
-                            >
-                              {sub.status.toUpperCase()}
-                            </span>
-                            {sub.reviewedBy && (
-                              <div className="mt-2 flex items-center gap-1.5">
-                                <UserCheck className="h-3 w-3 text-blue-400" />
-                                <span className="text-[10px] text-slate-400">
-                                  {typeof sub.reviewedBy === "string"
-                                    ? sub.reviewedBy
-                                    : sub.reviewedBy?.name}
+                            <div className="flex flex-col gap-2">
+                              <span
+                                className={`inline-flex w-fit rounded-full px-2 text-xs font-semibold leading-5 ${
+                                  sub.status === "accepted"
+                                    ? "bg-green-400/10 text-green-400"
+                                    : sub.status === "needs_improvement"
+                                      ? "bg-rose-400/10 text-rose-400"
+                                      : "bg-yellow-400/10 text-yellow-500"
+                                }`}
+                              >
+                                {sub.status.toUpperCase()}
+                              </span>
+                              
+                              <div className="flex flex-col gap-1">
+                                {sub.isLate && (
+                                  <span className="inline-flex w-fit items-center rounded-md bg-rose-400/10 px-1.5 py-0.5 text-[10px] font-medium text-rose-400 border border-rose-400/20">
+                                    LATE SUBMISSION
+                                  </span>
+                                )}
+                                <span className="text-[10px] text-slate-500 font-medium">
+                                  Max Marks: {sub.maxMarks || (sub.isLate ? 30 : 60)}
                                 </span>
                               </div>
-                            )}
+
+                              {sub.reviewedBy && (
+                                <div className="mt-1 flex items-center gap-1.5">
+                                  <UserCheck className="h-3 w-3 text-blue-400" />
+                                  <span className="text-[10px] text-slate-400">
+                                    {typeof sub.reviewedBy === "string"
+                                      ? sub.reviewedBy
+                                      : sub.reviewedBy?.name}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
                           </td>
                           <td className="px-3 py-5 text-sm align-top">
                             <SubmissionReviewForm

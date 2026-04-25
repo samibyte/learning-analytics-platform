@@ -107,6 +107,16 @@ export default function SubmitAssignmentPage() {
             </div>
           )}
 
+          {assignment && new Date() > new Date(assignment.dueDate) && (
+            <div className="bg-amber-900/20 text-amber-400 p-4 rounded-xl text-sm border border-amber-800/40 flex items-start gap-3">
+              <span className="text-xl">⚠️</span>
+              <div>
+                <p className="font-bold uppercase tracking-wider text-[10px]">Late Submission Warning</p>
+                <p className="mt-1">The deadline for this assignment has passed. This submission will be capped at <span className="font-bold text-white">30 marks</span> (out of 60).</p>
+              </div>
+            </div>
+          )}
+
           <div>
             <label
               htmlFor="repoUrl"

@@ -18,6 +18,8 @@ export interface ISubmission extends Document {
   reviewedAt?: Date;
   reviewHistory: IReviewHistory[];
   aiPreliminaryFeedback?: string;
+  isLate: boolean;
+  maxMarks: number;
 }
 
 const ReviewHistorySchema = new Schema<IReviewHistory>(
@@ -46,6 +48,8 @@ const SubmissionSchema = new Schema<ISubmission>(
     reviewedAt: { type: Date },
     reviewHistory: { type: [ReviewHistorySchema], default: [] },
     aiPreliminaryFeedback: { type: String },
+    isLate: { type: Boolean, default: false },
+    maxMarks: { type: Number, default: 60 },
   },
   { timestamps: true }
 );

@@ -147,6 +147,13 @@ export async function submitAssignment(
     console.error("Repo Analyzer failed:", e);
   }
 
+  // --- LATE SUBMISSION LOGIC ---
+  const assignment = await Assignment.findById(assignmentId);
+  if (!assignment) throw new Error("Assignment not found");
+
+  const isLate = new Date() > new Date(assignment.dueDate);
+  const maxMarks = isLate ? 30 : 60;
+
   // Check if they already submitted to avoid duplicates
   const existingSubmission = await Submission.findOne({
     assignmentId,
@@ -158,6 +165,8 @@ export async function submitAssignment(
     existingSubmission.repoUrl = repoUrl;
     existingSubmission.note = note;
     existingSubmission.status = "pending";
+    existingSubmission.isLate = isLate;
+    existingSubmission.maxMarks = maxMarks;
     if (aiPreliminaryFeedback)
       existingSubmission.aiPreliminaryFeedback = aiPreliminaryFeedback;
     await existingSubmission.save();
@@ -170,6 +179,8 @@ export async function submitAssignment(
     repoUrl,
     note,
     aiPreliminaryFeedback,
+    isLate,
+    maxMarks,
   });
 
   return { success: true };

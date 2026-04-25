@@ -38,5 +38,7 @@ export interface SubmissionPayload {
   reviewedAt?: string;
   reviewHistory?: SubmissionReviewHistory[];
   aiPreliminaryFeedback?: string;
+  isLate?: boolean;
+  maxMarks?: number;
   assignment?: AssignmentPayload;
 }

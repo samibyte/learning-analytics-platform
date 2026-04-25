@@ -89,19 +89,29 @@ export function StudentAssignmentList({
                         Submit Now
                       </Link>
                     ) : (
-                      <span
-                        className={`inline-flex rounded-full px-3 py-1 text-xs font-bold ${
-                          submission.status === "accepted"
-                            ? "bg-green-400/10 text-green-400 border border-green-400/20"
-                            : submission.status === "needs_improvement"
-                              ? "bg-rose-400/10 text-rose-400 border border-rose-400/20"
-                              : "bg-yellow-400/10 text-yellow-500 border border-yellow-400/20"
-                        }`}
-                      >
-                        {submission.status === "needs_improvement"
-                          ? "Needs Improvement"
-                          : submission.status.toUpperCase()}
-                      </span>
+                      <div className="flex flex-col items-end gap-2">
+                        <span
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-bold ${
+                            submission.status === "accepted"
+                              ? "bg-green-400/10 text-green-400 border border-green-400/20"
+                              : submission.status === "needs_improvement"
+                                ? "bg-rose-400/10 text-rose-400 border border-rose-400/20"
+                                : "bg-yellow-400/10 text-yellow-500 border border-yellow-400/20"
+                          }`}
+                        >
+                          {submission.status === "needs_improvement"
+                            ? "Needs Improvement"
+                            : submission.status.toUpperCase()}
+                        </span>
+                        {submission.isLate && (
+                          <span className="text-[10px] font-bold text-rose-400 uppercase tracking-widest">
+                            Late Submission
+                          </span>
+                        )}
+                        <span className="text-[10px] text-slate-500 font-medium">
+                          Max Marks: {submission.maxMarks || (submission.isLate ? 30 : 60)}
+                        </span>
+                      </div>
                     )}
                   </div>
                 </div>
