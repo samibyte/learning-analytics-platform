@@ -68,7 +68,7 @@ export default function NewAssignmentPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Page header */}
-      <header className="sticky top-0 z-30 flex h-16 items-center border-b border-slate-800/60 bg-[#0F0A1A]/80 backdrop-blur-md px-8">
+      <header className="sticky top-0 z-30 flex min-h-16 flex-wrap items-center gap-4 border-b border-slate-800/60 bg-[#0F0A1A]/80 backdrop-blur-md px-4 md:px-8 py-3 md:py-0">
         <div>
           <h1 className="text-lg font-semibold text-white">
             Create New Assignment
@@ -79,7 +79,7 @@ export default function NewAssignmentPage() {
         </div>
       </header>
 
-      <div className="flex-1  p-12">
+      <div className="flex-1 p-4 md:p-8">
         <div className="max-w-6xl mx-auto">
           <div className="bg-[#151025] px-6 py-8 sm:px-10 border border-slate-800/60 rounded-2xl shadow-xl">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -109,7 +109,7 @@ export default function NewAssignmentPage() {
               </div>
 
               <div>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <label
                     htmlFor="description"
                     className="block text-sm font-medium text-slate-300"
@@ -120,7 +120,7 @@ export default function NewAssignmentPage() {
                     type="button"
                     onClick={handleRefineClarity}
                     disabled={aiLoading}
-                    className="flex items-center text-sm font-medium text-fuchsia-400 hover:text-fuchsia-300 disabled:opacity-50 transition-colors"
+                    className="flex items-center text-xs sm:text-sm font-medium text-fuchsia-400 hover:text-fuchsia-300 disabled:opacity-50 transition-colors"
                   >
                     <Sparkles className="h-4 w-4 mr-1" />
                     {aiLoading ? "Refining..." : "Enhance Clarity with AI"}

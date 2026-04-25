@@ -98,7 +98,7 @@ export function InstructorAssignmentList({
                   </p>
                   <Link
                     href={`/instructor/assignments/${assignment._id}/edit`}
-                    className="mt-1 inline-block text-[10px] font-medium text-fuchsia-500 hover:text-fuchsia-300 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="mt-1 inline-block text-[10px] font-medium text-fuchsia-500 hover:text-fuchsia-400 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity"
                     onClick={(e) => e.stopPropagation()}
                   >
                     Edit →

@@ -37,7 +37,7 @@ export default async function InstructorSubmissionsPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Page header */}
-      <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-slate-800/60 bg-[#0F0A1A]/80 backdrop-blur-md px-8">
+      <header className="sticky top-0 z-30 flex min-h-16 flex-wrap items-center gap-4 border-b border-slate-800/60 bg-[#0F0A1A]/80 backdrop-blur-md px-4 md:px-8 py-3 md:py-0">
         <div className="flex-1">
           <h1 className="text-lg font-semibold text-white">
             Submissions &amp; Analytics
@@ -62,7 +62,7 @@ export default async function InstructorSubmissionsPage() {
         </div>
       </header>
 
-      <div className="flex-1 p-8 space-y-8">
+      <div className="flex-1 p-4 md:p-8 space-y-6 md:space-y-8">
         <AnalyticsCharts submissions={submissions} />
 
         <div className="flow-root">

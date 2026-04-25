@@ -118,7 +118,7 @@ export default function EditAssignmentPage({
   if (fetchLoading) {
     return (
       <div className="flex flex-col min-h-screen">
-        <header className="sticky top-0 z-30 flex h-16 items-center border-b border-slate-800/60 bg-[#0F0A1A]/80 backdrop-blur-md px-8">
+        <header className="sticky top-0 z-30 flex min-h-16 flex-wrap items-center border-b border-slate-800/60 bg-[#0F0A1A]/80 backdrop-blur-md px-4 md:px-8 py-3 md:py-0">
           <h1 className="text-lg font-semibold text-white">Edit Assignment</h1>
         </header>
         <div className="flex-1 flex items-center justify-center">
@@ -133,7 +133,7 @@ export default function EditAssignmentPage({
   return (
     <div className="flex flex-col min-h-screen">
       {/* Page header */}
-      <header className="sticky top-0 z-30 flex h-16 items-center border-b border-slate-800/60 bg-[#0F0A1A]/80 backdrop-blur-md px-8">
+      <header className="sticky top-0 z-30 flex min-h-16 flex-wrap items-center border-b border-slate-800/60 bg-[#0F0A1A]/80 backdrop-blur-md px-4 md:px-8 py-3 md:py-0">
         <div>
           <h1 className="text-lg font-semibold text-white">Edit Assignment</h1>
           <p className="text-xs text-slate-400">
@@ -142,10 +142,10 @@ export default function EditAssignmentPage({
         </div>
       </header>
 
-      <div className="flex-1 p-8">
-        <div className="max-w-9/11 flex gap-8 mx-auto">
+      <div className="flex-1 p-4 md:p-8">
+        <div className="max-w-7xl flex flex-col lg:flex-row gap-8 mx-auto">
           {/* ── Edit form ── */}
-          <div className="bg-[#151025] flex-3 px-6 py-8 sm:px-10 border border-slate-800/60 rounded-2xl shadow-xl">
+          <div className="bg-[#151025] lg:flex-3 px-4 sm:px-6 py-8 md:px-10 border border-slate-800/60 rounded-2xl shadow-xl w-full">
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <div className="bg-red-900/30 text-rose-400 p-3 rounded-md text-sm border border-red-800/50">
@@ -185,7 +185,7 @@ export default function EditAssignmentPage({
                     type="button"
                     onClick={handleRefineClarity}
                     disabled={aiLoading}
-                    className="flex items-center text-sm font-medium text-fuchsia-400 hover:text-fuchsia-300 disabled:opacity-50 transition-colors"
+                    className="flex items-center text-xs sm:text-sm font-medium text-fuchsia-400 hover:text-fuchsia-300 disabled:opacity-50 transition-colors"
                   >
                     <Sparkles className="h-4 w-4 mr-1" />
                     {aiLoading ? "Refining…" : "Enhance with AI"}
@@ -292,11 +292,11 @@ export default function EditAssignmentPage({
                 </div>
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="pt-2 flex flex-col sm:flex-row gap-3">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex flex-1 justify-center rounded-xl bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-[#151025] transition-all disabled:opacity-50"
+                  className="flex flex-1 justify-center rounded-xl bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-[#151025] transition-all disabled:opacity-50 order-1 sm:order-none"
                 >
                   {loading ? "Saving…" : "Save Changes"}
                 </button>
@@ -304,7 +304,7 @@ export default function EditAssignmentPage({
                   type="button"
                   onClick={() => setShowDeleteConfirm(true)}
                   disabled={loading || deleting}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-600/20 border border-rose-600/30 px-4 py-3 text-sm font-semibold text-rose-400 hover:bg-rose-600/30 focus:outline-none focus:ring-2 focus:ring-rose-600 focus:ring-offset-2 focus:ring-offset-[#151025] transition-all disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-600/20 border border-rose-600/30 px-4 py-3 text-sm font-semibold text-rose-400 hover:bg-rose-600/30 focus:outline-none focus:ring-2 focus:ring-rose-600 focus:ring-offset-2 focus:ring-offset-[#151025] transition-all disabled:opacity-50 order-2 sm:order-none"
                 >
                   <Trash2 className="h-4 w-4" />
                   Delete
@@ -348,7 +348,7 @@ export default function EditAssignmentPage({
 
           {/* ── Edit history / audit trail ── */}
           {editHistory.length > 0 && (
-            <div className="flex-1 rounded-2xl bg-[#151025] border border-slate-800/60 overflow-hidden">
+            <div className="lg:flex-1 rounded-2xl bg-[#151025] border border-slate-800/60 overflow-hidden w-full h-fit">
               <div className="border-b border-slate-800/60 px-6 py-4">
                 <h2 className="text-sm font-semibold text-white flex items-center gap-2">
                   <Clock className="h-4 w-4 text-slate-400" />

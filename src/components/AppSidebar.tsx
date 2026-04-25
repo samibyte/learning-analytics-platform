@@ -12,7 +12,11 @@ import {
   LogOut,
   GraduationCap,
   ChevronRight,
+  X,
 } from "lucide-react";
+import { useSidebar } from "./SidebarProvider";
+import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 type Role = "instructor" | "student";
 
@@ -41,19 +45,48 @@ interface AppSidebarProps {
 
 export function AppSidebar({ role, userName, userEmail }: AppSidebarProps) {
   const pathname = usePathname();
+  const { isOpen, close } = useSidebar();
   const navItems = role === "instructor" ? INSTRUCTOR_NAV : STUDENT_NAV;
 
+  // Close sidebar when route changes
+  useEffect(() => {
+    close();
+  }, [pathname, close]);
+
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-[#0D0919] border-r border-slate-800/60">
-      {/* Logo / Brand */}
-      <div className="flex h-16 shrink-0 items-center gap-3 px-6 border-b border-slate-800/60">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-fuchsia-500 to-violet-600 shadow-lg shadow-fuchsia-500/20">
-          <GraduationCap className="h-4 w-4 text-white" />
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-[#0F0A1A]/60 backdrop-blur-sm lg:hidden transition-opacity"
+          onClick={close}
+        />
+      )}
+
+      <aside
+        className={cn(
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-[#0D0919] border-r border-slate-800/60 transform transition-transform duration-300 ease-in-out lg:translate-x-0",
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        {/* Logo / Brand */}
+        <div className="flex h-16 shrink-0 items-center justify-between px-6 border-b border-slate-800/60">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-fuchsia-500 to-violet-600 shadow-lg shadow-fuchsia-500/20">
+              <GraduationCap className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-base font-bold bg-gradient-to-r from-fuchsia-400 to-violet-400 bg-clip-text text-transparent">
+              EduAnalytics
+            </span>
+          </div>
+          {/* Close button for mobile */}
+          <button
+            onClick={close}
+            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white"
+          >
+            <X className="h-5 w-5" />
+          </button>
         </div>
-        <span className="text-base font-bold bg-gradient-to-r from-fuchsia-400 to-violet-400 bg-clip-text text-transparent">
-          EduAnalytics
-        </span>
-      </div>
 
       {/* Role badge */}
       <div className="px-4 py-3">
@@ -126,5 +159,6 @@ export function AppSidebar({ role, userName, userEmail }: AppSidebarProps) {
         </button>
       </div>
     </aside>
+    </>
   );
 }
