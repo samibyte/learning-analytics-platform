@@ -12,8 +12,18 @@ export default function LoginPage() {
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Check for remembered email on mount
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
@@ -29,6 +39,13 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    // Handle Remember Me logic
+    if (rememberMe) {
+      localStorage.setItem("rememberedEmail", email);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+    }
 
     const res = await signIn("credentials", {
       email,
@@ -112,6 +129,8 @@ export default function LoginPage() {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
                   className="h-4 w-4 rounded border-slate-600 bg-[#1A142B] text-fuchsia-600 focus:ring-fuchsia-500"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-300">
