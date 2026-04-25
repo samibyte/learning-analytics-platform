@@ -83,12 +83,12 @@ export async function getAtRiskStudents(): Promise<StudentRiskProfile[]> {
     }
 
     if (missingSubmissionsCount > 0) {
-      riskScore += missingSubmissionsCount * 2;
+      riskScore += missingSubmissionsCount * 3;
       reasons.push(`${missingSubmissionsCount} Missing Submission(s)`);
     }
 
     let severity: RiskSeverity = "none";
-    if (riskScore >= 5) severity = "high";
+    if (riskScore >= 6) severity = "high";
     else if (riskScore >= 3) severity = "medium";
     else if (riskScore >= 1) severity = "low";
 
