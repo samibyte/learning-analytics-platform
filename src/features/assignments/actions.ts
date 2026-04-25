@@ -155,3 +155,23 @@ export async function updateAssignment(
   await assignment.save();
   return { success: true };
 }
+
+/** ─── DELETE ASSIGNMENT (only instructors) ─────────────────────────────── **/
+export async function deleteAssignment(assignmentId: string) {
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role !== "instructor")
+    throw new Error("Unauthorized");
+
+  await connectToDatabase();
+
+  const assignment = await Assignment.findById(assignmentId);
+  if (!assignment) throw new Error("Assignment not found");
+
+  // Delete all submissions related to this assignment
+  await Submission.deleteMany({ assignmentId });
+
+  // Delete the assignment
+  await Assignment.findByIdAndDelete(assignmentId);
+
+  return { success: true };
+}

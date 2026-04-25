@@ -2,10 +2,13 @@
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
-import { updateAssignment } from "@/features/assignments/actions";
+import {
+  updateAssignment,
+  deleteAssignment,
+} from "@/features/assignments/actions";
 import { refineAssignmentClarity } from "@/features/assignments/ai-actions";
 import type { AssignmentPayload, AssignmentEditEntry } from "@/features/types";
-import { Sparkles, Clock, User } from "lucide-react";
+import { Sparkles, Clock, User, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 // We fetch assignment data on the client so the form comes pre-filled
@@ -26,8 +29,10 @@ export default function EditAssignmentPage({
   const [loading, setLoading] = useState(false);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [aiLoading, setAiLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [editNote, setEditNote] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -91,6 +96,22 @@ export default function EditAssignmentPage({
         err instanceof Error ? err.message : "Failed to update assignment",
       );
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    setError("");
+    try {
+      await deleteAssignment(id);
+      toast.success("Assignment deleted!");
+      await router.push("/instructor/dashboard");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "Failed to delete assignment",
+      );
+      setDeleting(false);
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -271,17 +292,59 @@ export default function EditAssignmentPage({
                 </div>
               </div>
 
-              <div className="pt-2">
+              <div className="pt-2 flex gap-3">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex w-full justify-center rounded-xl bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-[#151025] transition-all disabled:opacity-50"
+                  className="flex flex-1 justify-center rounded-xl bg-gradient-to-r from-fuchsia-500 to-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-[#151025] transition-all disabled:opacity-50"
                 >
                   {loading ? "Saving…" : "Save Changes"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowDeleteConfirm(true)}
+                  disabled={loading || deleting}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-600/20 border border-rose-600/30 px-4 py-3 text-sm font-semibold text-rose-400 hover:bg-rose-600/30 focus:outline-none focus:ring-2 focus:ring-rose-600 focus:ring-offset-2 focus:ring-offset-[#151025] transition-all disabled:opacity-50"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
                 </button>
               </div>
             </form>
           </div>
+
+          {/* Delete Confirmation Modal */}
+          {showDeleteConfirm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+              <div className="w-full max-w-md rounded-2xl bg-[#151025] border border-slate-800/60 shadow-xl p-6 space-y-4">
+                <div>
+                  <h3 className="text-lg font-bold text-white">
+                    Delete Assignment?
+                  </h3>
+                  <p className="mt-2 text-sm text-slate-400">
+                    This action cannot be undone. All related submissions will
+                    also be permanently deleted.
+                  </p>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowDeleteConfirm(false)}
+                    disabled={deleting}
+                    className="flex-1 rounded-lg border border-slate-700 bg-slate-700/20 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-700/40 transition-colors disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    disabled={deleting}
+                    className="flex-1 rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700 transition-colors disabled:opacity-50"
+                  >
+                    {deleting ? "Deleting…" : "Delete"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ── Edit history / audit trail ── */}
           {editHistory.length > 0 && (
